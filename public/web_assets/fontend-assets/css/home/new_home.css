@@ -1,0 +1,194 @@
+@charset "utf-8";
+/*==================================================
+
+	Project: University Of Education
+	Version: 1.0
+	Last change: 18/03/16
+	Author : KodeForest
+
+/**
+ * Table of Contents :
+
+ * 1.0 - DEFAULT CSS START
+ * 2.0 - KF EDUCATION 2 HEADER CSS START
+ * 3.0 - MAIN BANNER CSS Strat
+ * 4.0 - KF INNER PAGE BANNER CSS START
+ * 5.0 - DEFALT HEADINGS CSS START
+ * 6.0 - DEFALT HEADINGS CSS START
+ * 7.0 - Courses List Pge CSS Strat
+ * 8.0 - SIDE BAR CSS START
+ * 9.0 - OUR TEACHER PAGE CSS START
+ * 10.0 - OUR EVENT PAGE CSS START
+ * 11.0 - OUR BLOG PAGE CSS START
+ * 12.0 - ABOUt US PAGE CSS START
+ * 13.0 - EVENT LIST PAGE CSS START
+ * 14.0 - OUR COURSES $ COLUM PAGE CSS START
+ * 15.0 - OUR COURSES PAGE CSS START
+ * 16.0 - BLOG  3 PAGE CSS START
+ * 17.0 - TEACHER BIO DETAILS PAGE CSS START
+ * 18.0 - EVENT DETAILS PAGE CSS START
+ * 19.0 - BLOG DETAILS PAGE CSS START
+ * 20.0 - COURSES DETAILS PAGE CSS START
+ * 21.0 - CONTACT US 1 PAGE CSS START
+ * 22.0 - CONTACT US 2 PAGE CSS START
+ * 23.0 - FILTERABLE GALLERY PAGE CSS START
+ * 24.0 - KF EDUCATION 404 PAGE CSS START
+ * 25.0 - CHECKBOX AND RADIO BUTTON CSS start
+
+	[Color codes]
+
+	Background: #ffffff (white)
+	Content: #999999 (light black)
+	Header h1: #111111 (dark black)
+	Header h2: #111111 (dark black)
+	Footer:  #000000 (dark black)
+
+	a (standard): #999999 (light black)
+	a (visited): #999999 (light black)
+	a (active): #999999 (light black)
+ *
+
+/*
+	  ==============================================================
+		 DEFALT HEADINGS CSS START
+	  ==============================================================
+/*search wrap end*/
+/*edu2 welcome wrap start*/
+.kf_edu2_intro_wrap{
+    position: relative;
+    background-color: #f8f8f8;
+}
+.kf_edu2_intro_wrap:before{
+    content: "";
+    left: 0;
+    width: 50%;
+    top: 0;
+    bottom: 0;
+
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+}
+.kf_intro_des_wrap{
+    float: right;
+
+    padding:0 30px;
+
+}
+.kf_intro {
+    float: right;
+    width: 100%;
+;
+}
+.kf_intro_des{
+    float: left;
+    width: 33.3%;
+}
+.kf_intro_des_caption{
+    float: left;
+    width: 100%;
+    padding: 0px 15px;
+    text-align: center;
+}
+.kf_intro_des_caption h6{
+    text-transform: uppercase;
+}
+.kf_intro_des_caption span{
+    display: inline-block;
+    width: 83px;
+    height: 83px;
+    border-radius: 100%;
+    font-size: 32px;
+    background-color: #fff;
+    color: #666666;
+    margin: 0 0 26px 0;
+    border: solid 1px #ddd;
+}
+.kf_intro_des_caption:hover span{
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.2)
+}
+.kf_intro_des_caption span i{
+    line-height: 83px;
+}
+.kf_intro_des_caption h6{
+    font-weight: normal;
+    margin-bottom: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.kf_intro_des_caption p{
+    margin: 0 0 19px 0;
+}
+.kf_intro_des_caption a{
+    display: inline-block;
+    font-weight: bold;
+    color: #666666;
+    text-transform: capitalize;
+    margin-bottom: 45px;
+    font-size: 14px;
+}
+.kf_intro_des figure figcaption{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    margin: -7px 0 0 0;
+}
+.kf_intro_des figure figcaption a{
+    display: inline-block;
+    font-weight: bold;
+    font-size: 20px;
+    color: #fff;
+    text-transform: capitalize;
+    opacity: 0;
+}
+.kf_intro_des:hover figure figcaption a{
+    opacity: 1;
+}
+/*edu2 welcome wrap end*/
+/*OUR OURSES SECTION START*/
+.kf_edu2_tab_wrap{
+    float: left;
+    width: 100%;
+}
+.kf_edu2_tab_wrap .nav-tabs{
+    border:none;
+    float: right;
+}
+.kf_edu2_tab_wrap .nav-tabs li{
+    margin: 0px 0px 0px 23px;
+    border:none;
+}
+.kf_edu2_tab_wrap .nav-tabs > li > a {
+    border-radius: 0;
+    border: none;
+    color: #666666;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 4px 0 8px;
+    text-transform: capitalize;
+    margin: 0px;
+    font-family: 'Ubuntu', sans-serif;
+}
+.kf_edu2_tab_wrap  .nav.nav-tabs > li:first-child {
+    margin-left: 0;
+}
+.kf_edu2_tab_wrap  .nav > li > a:focus,.kf_edu2_tab_wrap  .nav > li > a:hover,
+.kf_edu2_tab_wrap .nav-tabs > li > a:hover{
+    background-color: transparent;
+    border: none;
+    text-decoration: none;
+}
+.kf_edu2_tab_wrap .nav-tabs > li > a:before{
+    content: "";
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    height: 2px;
+    width: 0%;
+}
+

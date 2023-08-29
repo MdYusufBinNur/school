@@ -30,19 +30,36 @@ class Youtube
     public $page_info = [];
 
     /**
+     * @var array
+     */
+    protected $config = [];
+
+    /**
      * Constructor
      * $youtube = new Youtube(['key' => 'KEY HERE'])
      *
      * @param string $key
      * @throws \Exception
      */
-    public function __construct($key)
+    public function __construct($key, $config = [])
     {
         if (is_string($key) && !empty($key)) {
             $this->youtube_key = $key;
         } else {
             throw new \Exception('Google API key is Required, please visit https://console.developers.google.com/');
         }
+        $this->config['use-http-host'] = isset($config['use-http-host']) ? $config['use-http-host'] : false;
+    }
+
+    /**
+     * @param $setting
+     * @return Youtube
+     */
+    public function useHttpHost($setting)
+    {
+        $this->config['use-http-host'] = !!$setting;
+
+        return $this;
     }
 
     /**
@@ -74,7 +91,7 @@ class Youtube
         $API_URL = $this->getApi('categories.list');
         $params = [
             'key' => $this->youtube_key,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'regionCode' => $regionCode
         ];
 
@@ -116,7 +133,7 @@ class Youtube
             'id' => $id,
             'videoId' => $videoId,
             'maxResults' => $maxResults,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'order' => $order,
         ]);
 
@@ -144,7 +161,37 @@ class Youtube
         $params = [
             'id' => is_array($vId) ? implode(',', $vId) : $vId,
             'key' => $this->youtube_key,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
+        ];
+
+        $apiData = $this->api_get($API_URL, $params);
+
+        if (is_array($vId)) {
+            return $this->decodeMultiple($apiData);
+        }
+
+        return $this->decodeSingle($apiData);
+    }
+
+    /**
+     * Gets localized video info by language (f.ex. de) by adding this parameter after video id
+     * Youtube::getLocalizedVideoInfo($video->url, 'de')
+     *
+     * @param $vId
+     * @param $language
+     * @param array $part
+     * @return \StdClass
+     * @throws \Exception
+     */
+
+    public function getLocalizedVideoInfo($vId, $language, $part = ['id', 'snippet', 'contentDetails', 'player', 'statistics', 'status']) {
+
+        $API_URL = $this->getApi('videos.list');
+        $params = [
+            'id'    => is_array($vId) ? implode(',', $vId) : $vId,
+            'key' => $this->youtube_key,
+            'hl'    =>  $language,
+            'part' => implode(',', $part),
         ];
 
         $apiData = $this->api_get($API_URL, $params);
@@ -169,7 +216,7 @@ class Youtube
         $API_URL = $this->getApi('videos.list');
         $params = [
             'chart' => 'mostPopular',
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'regionCode' => $regionCode,
             'maxResults' => $maxResults,
         ];
@@ -192,7 +239,7 @@ class Youtube
     {
         $params = [
             'q' => $q,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'maxResults' => $maxResults,
         ];
 
@@ -213,7 +260,7 @@ class Youtube
         $params = [
             'q' => $q,
             'type' => 'video',
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'maxResults' => $maxResults,
         ];
         if (!empty($order)) {
@@ -240,7 +287,7 @@ class Youtube
             'q' => $q,
             'type' => 'video',
             'channelId' => $channelId,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'maxResults' => $maxResults,
         ];
         if (!empty($order)) {
@@ -265,7 +312,7 @@ class Youtube
         $params = [
             'type' => 'video',
             'channelId' => $channelId,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'maxResults' => $maxResults,
         ];
         if (!empty($order)) {
@@ -324,21 +371,21 @@ class Youtube
 
     /**
      * @param $username
-     * @param $optionalParams
+     * @param array $optionalParams
      * @param array $part
      * @return \StdClass
      * @throws \Exception
      */
-    public function getChannelByName($username, $optionalParams = false, $part = ['id', 'snippet', 'contentDetails', 'statistics', 'invideoPromotion'])
+    public function getChannelByName($username, $optionalParams = [], $part = ['id', 'snippet', 'contentDetails', 'statistics'])
     {
         $API_URL = $this->getApi('channels.list');
         $params = [
             'forUsername' => $username,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
         ];
-        if ($optionalParams) {
-            $params = array_merge($params, $optionalParams);
-        }
+
+        $params = array_merge($params, $optionalParams);
+
         $apiData = $this->api_get($API_URL, $params);
 
         return $this->decodeSingle($apiData);
@@ -346,21 +393,21 @@ class Youtube
 
     /**
      * @param $id
-     * @param $optionalParams
+     * @param array $optionalParams
      * @param array $part
      * @return \StdClass
      * @throws \Exception
      */
-    public function getChannelById($id, $optionalParams = false, $part = ['id', 'snippet', 'contentDetails', 'statistics', 'invideoPromotion'])
+    public function getChannelById($id, $optionalParams = [], $part = ['id', 'snippet', 'contentDetails', 'statistics'])
     {
         $API_URL = $this->getApi('channels.list');
         $params = [
             'id' => is_array($id) ? implode(',', $id) : $id,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
         ];
-        if ($optionalParams) {
-            $params = array_merge($params, $optionalParams);
-        }
+
+        $params = array_merge($params, $optionalParams);
+
         $apiData = $this->api_get($API_URL, $params);
 
         if (is_array($id)) {
@@ -382,12 +429,10 @@ class Youtube
         $API_URL = $this->getApi('playlists.list');
         $params = [
             'channelId' => $channelId,
-            'part' => implode(', ', $part)
+            'part' => implode(',', $part)
         ];
 
-        if ($optionalParams) {
-            $params = array_merge($params, $optionalParams);
-        }
+        $params = array_merge($params, $optionalParams);
 
         $apiData = $this->api_get($API_URL, $params);
 
@@ -410,7 +455,7 @@ class Youtube
         $API_URL = $this->getApi('playlists.list');
         $params = [
             'id' => is_array($id)? implode(',', $id) : $id,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
         ];
         $apiData = $this->api_get($API_URL, $params);
 
@@ -434,7 +479,7 @@ class Youtube
         $API_URL = $this->getApi('playlistItems.list');
         $params = [
             'playlistId' => $playlistId,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'maxResults' => $maxResults,
         ];
 
@@ -467,7 +512,7 @@ class Youtube
         $API_URL = $this->getApi('activities');
         $params = [
             'channelId' => $channelId,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'maxResults' => $maxResults,
             'pageToken' => $pageToken,
         ];
@@ -499,7 +544,7 @@ class Youtube
         $params = [
             'type' => 'video',
             'relatedToVideoId' => $videoId,
-            'part' => implode(', ', $part),
+            'part' => implode(',', $part),
             'maxResults' => $maxResults,
         ];
         $apiData = $this->api_get($API_URL, $params);
@@ -515,7 +560,7 @@ class Youtube
      * @throws \Exception
      * @return string Video Id
      */
-    public static function parseVIdFromURL($youtube_url)
+    public static function parseVidFromURL($youtube_url)
     {
         if (strpos($youtube_url, 'youtube.com')) {
             if (strpos($youtube_url, 'embed')) {
@@ -691,6 +736,11 @@ class Youtube
 
         //boilerplates for CURL
         $tuCurl = curl_init();
+
+        if (isset($_SERVER['HTTP_HOST']) && $this->config['use-http-host']) {
+            curl_setopt($tuCurl, CURLOPT_HEADER, array('Referer' => $_SERVER['HTTP_HOST']));
+        }
+
         curl_setopt($tuCurl, CURLOPT_URL, $url . (strpos($url, '?') === false ? '?' : '') . http_build_query($params));
         if (strpos($url, 'https') === false) {
             curl_setopt($tuCurl, CURLOPT_PORT, 80);

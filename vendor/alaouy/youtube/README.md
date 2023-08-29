@@ -1,7 +1,7 @@
 Youtube
 =========
 
-![Travis Youtube Build](https://api.travis-ci.org/alaouy/Youtube.svg?branch=master)
+![Travis Youtube Build](https://api.travis-ci.org/alaouy/Youtube.svg?branch=master) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/alaouym)
 
 Laravel PHP Facade/Wrapper for the Youtube Data API v3 ( Non-OAuth )
 
@@ -65,6 +65,9 @@ $video = Youtube::getVideoInfo('rie-hPVJ7Sw');
 // Get multiple videos info from an array
 $videoList = Youtube::getVideoInfo(['rie-hPVJ7Sw','iKHTawgyKWQ']);
 
+// Get localized video info
+$video = Youtube::getLocalizedVideoInfo('vjF9GgrY9c0', 'pl');
+
 // Get multiple videos related to a video
 $relatedVideos = Youtube::getRelatedVideos('iKHTawgyKWQ');
 
@@ -113,6 +116,20 @@ $activities = Youtube::getActivitiesByChannelId('UCk1SpWNzOs4MYmr0uICEntg');
 $videoId = Youtube::parseVidFromURL('https://www.youtube.com/watch?v=moSFlvxnbgk');
 // result: moSFlvxnbgk
 ```
+
+## Validation Rules
+
+```php
+// use Alaouy\Youtube\Rules\ValidYoutubeVideo;
+
+
+// Validate a YouTube Video URL
+[
+    'youtube_video_url' => ['bail', 'required', new ValidYoutubeVideo]
+];
+```
+
+You can use the bail rule in conjunction with this in order to prevent unnecessary queries.  
 
 ## Basic Search Pagination
 
@@ -179,6 +196,22 @@ print_r($search['results']);
 
 The pagination above is quite basic. Depending on what you are trying to achieve you may want to create a recursive function that traverses the results.
 
+## Manual Class Instantiation
+
+```php
+// Directly call the YouTube constructor
+$youtube = new Youtube(config('YOUTUBE_API_KEY'));
+
+// By default, if the $_SERVER['HTTP_HOST'] header is set,
+// it will be used as the `Referer` header. To override
+// this setting, set 'use-http-host' to false during
+// object construction:
+$youtube = new Youtube(config('YOUTUBE_API_KEY'), ['use-http-host' => false]);
+
+// This setting can also be set after the object was created
+$youtube->useHttpHost(false);
+```
+
 ## Run Unit Test
 If you have PHPUnit installed in your environment, run:
 
@@ -202,6 +235,9 @@ Please read the ["Reference" section](https://developers.google.com/youtube/v3/d
 - [Youtube Data API v3 Doc](https://developers.google.com/youtube/v3/)
 - [Obtain API key from Google API Console](https://console.developers.google.com)
 
+## Donation
+If you find this project to be of use to you please consider buying me a cup of tea :)
 
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/alaouym)
 ## Credits
 Built on code from Madcoda's [php-youtube-api](https://github.com/madcoda/php-youtube-api).
